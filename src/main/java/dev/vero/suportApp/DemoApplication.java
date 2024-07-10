@@ -1,4 +1,4 @@
-package dev.vero.demo;
+package dev.vero.suportApp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

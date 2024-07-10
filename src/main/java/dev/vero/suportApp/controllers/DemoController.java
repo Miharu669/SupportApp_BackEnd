@@ -1,4 +1,4 @@
-package dev.vero.demo.controllers;
+package dev.vero.suportApp.controllers;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
