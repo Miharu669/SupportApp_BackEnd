@@ -1,15 +1,15 @@
-package dev.vero.suportApp.controllers;
+// package dev.vero.suportApp.controllers;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+// import org.springframework.web.bind.annotation.GetMapping;
+// import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class DemoController {
+// @RestController
+// public class DemoController {
 
-    @GetMapping(path = "")
+//     @GetMapping(path = "")
 
-    public String index() {
-        return "Tomatoes";
-    }
-}
+//     public String index() {
+//         return "Tomatoes";
+//     }
+// }
