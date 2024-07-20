@@ -1,4 +1,4 @@
-package dev.vero.suportApp.models;
+package dev.vero.supportApp.models;
 
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "supportApp")
+@Table(name = "support_app")
 public class Request {
 
     @Id
@@ -18,10 +18,10 @@ public class Request {
     private Long id;
 
     @NotBlank(message = "Requester name is required")
-    private String requesterName;
+    private String requestName;
 
-    @NotBlank(message = "Topic is required")
-    private String topic;
+    @NotBlank(message = "Subject is required")
+    private String subject;
 
     @NotBlank(message = "Description is required")
     private String description;
@@ -41,12 +41,12 @@ public class Request {
         this.id = id;
     }
 
-    public String getRequesterName() {
-        return requesterName;
+    public String getRequestName() {
+        return requestName;
     }
 
-    public void setRequesterName(String requesterName) {
-        this.requesterName = requesterName;
+    public void setRequestName(String requestName) {
+        this.requestName = requestName;
     }
 
     public LocalDateTime getRequestDate() {
@@ -57,12 +57,12 @@ public class Request {
         this.requestDate = requestDate;
     }
 
-    public String getTopic() {
-        return topic;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getDescription() {

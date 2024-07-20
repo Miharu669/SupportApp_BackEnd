@@ -1,3 +1,4 @@
+package dev.vero.supportApp;
 // package dev.vero.suportApp;
 
 // import org.springframework.boot.SpringApplication;
