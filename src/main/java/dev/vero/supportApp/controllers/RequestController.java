@@ -39,15 +39,8 @@ public class RequestController {
    
     @PostMapping
     public ResponseEntity<?> createRequest(@Valid @RequestBody Request newRequest) {
-        try {
-            Request createdRequest = service.store(newRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
-        } catch (Exception e) {
-            e.printStackTrace(); 
-            return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error creating request: " + e.getMessage());
-        }
+        Request createdRequest = service.store(newRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
     }
 
    

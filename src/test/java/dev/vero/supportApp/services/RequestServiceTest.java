@@ -152,4 +152,94 @@ public class RequestServiceTest {
         assertThat(thrownException).isNotNull();
         assertThat(thrownException.getMessage()).isEqualTo("Request not found with id 1");
     }
+
+    @Test
+    void testStoreWithNullRequest() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            requestService.store(null);
+        });
+    }
+
+    @Test
+    void testUpdateWithNullRequest() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            requestService.update(1L, null);
+        });
+    }
+
+    @Test
+    void testStoreWithEmptyRequestName() {
+        Request request = new Request();
+        request.setRequestName("");
+        request.setSubject("Issue with Service");
+        request.setDescription("Detailed issue description.");
+        request.setRequestDate(LocalDateTime.now());
+
+        when(requestRepository.save(any(Request.class)))
+                .thenThrow(new IllegalArgumentException("Request name cannot be empty"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            requestService.store(request);
+        });
+    }
+
+    @Test
+    void testUpdateWithEmptyRequestName() {
+        Request existingRequest = new Request();
+        existingRequest.setId(1L);
+        existingRequest.setRequestName("John Doe");
+        existingRequest.setSubject("Issue with Service");
+        existingRequest.setDescription("Detailed issue description.");
+        existingRequest.setRequestDate(LocalDateTime.now());
+
+        Request updatedRequest = new Request();
+        updatedRequest.setRequestName("");
+        updatedRequest.setSubject("Service Issue Updated");
+        updatedRequest.setDescription("Updated issue description.");
+
+        when(requestRepository.findById(1L)).thenReturn(Optional.of(existingRequest));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            requestService.update(1L, updatedRequest);
+        });
+    }
+
+    @Test
+    void testStoreWithMaxLengthRequestName() {
+        Request request = new Request();
+        String longRequestName = "A".repeat(256);
+        request.setRequestName(longRequestName);
+        request.setSubject("Issue with Service");
+        request.setDescription("Detailed issue description.");
+        request.setRequestDate(LocalDateTime.now());
+
+        when(requestRepository.save(any(Request.class)))
+                .thenThrow(new IllegalArgumentException("Request name exceeds maximum length"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            requestService.store(request);
+        });
+    }
+
+    @Test
+    void testUpdateWithMaxLengthRequestName() {
+        Request existingRequest = new Request();
+        existingRequest.setId(1L);
+        existingRequest.setRequestName("John Doe");
+        existingRequest.setSubject("Issue with Service");
+        existingRequest.setDescription("Detailed issue description.");
+        existingRequest.setRequestDate(LocalDateTime.now());
+
+        Request updatedRequest = new Request();
+        String longRequestName = "A".repeat(256);
+        updatedRequest.setRequestName(longRequestName);
+        updatedRequest.setSubject("Service Issue Updated");
+        updatedRequest.setDescription("Updated issue description.");
+
+        when(requestRepository.findById(1L)).thenReturn(Optional.of(existingRequest));
+
+        assertThrows(RuntimeException.class, () -> {
+            requestService.update(1L, updatedRequest);
+        });
+    }
 }

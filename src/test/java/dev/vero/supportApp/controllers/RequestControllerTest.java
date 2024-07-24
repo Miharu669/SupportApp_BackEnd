@@ -138,7 +138,7 @@ public class RequestControllerTest {
     @Test
     @DisplayName("Should return 400 for creating a support request with validation errors")
     void testCreateRequestValidationError() throws Exception {
-        Request newRequest = new Request(); 
+        Request newRequest = new Request();
 
         MockHttpServletResponse response = mockMvc.perform(post("/api/support-requests")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -148,18 +148,33 @@ public class RequestControllerTest {
                 .getResponse();
 
         assertThat(response.getStatus(), is(400));
-        assertThat(response.getContentAsString(), containsString("errors"));
+
+        String content = response.getContentAsString();
+        assertThat(content, containsString("errors"));
+
+        @SuppressWarnings("unchecked")
+        Map<String, Object> responseMap = mapper.readValue(content, Map.class);
+        assertThat(responseMap, hasKey("errors"));
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> errors = (Map<String, String>) responseMap.get("errors");
+
+        assertThat(errors.keySet(), hasItems("requestName", "subject", "description"));
+        assertThat(errors.get("requestName"), containsString("Requester name is required"));
+        assertThat(errors.get("subject"), containsString("Subject is required"));
+        assertThat(errors.get("description"), containsString("Description is required"));
     }
 
     @Test
     @DisplayName("Should update an existing support request")
     void testUpdateRequest() throws Exception {
-        when(service.update(Mockito.eq(1L), Mockito.any(Request.class))).thenReturn(request1);
 
         Request updatedRequest = new Request();
         updatedRequest.setRequestName("John Doe Updated");
         updatedRequest.setSubject("Updated Subject");
         updatedRequest.setDescription("Updated Description");
+
+        when(service.update(Mockito.eq(1L), Mockito.any(Request.class))).thenReturn(updatedRequest);
 
         MockHttpServletResponse response = mockMvc.perform(put("/api/support-requests/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -168,11 +183,15 @@ public class RequestControllerTest {
                 .andReturn()
                 .getResponse();
 
-        System.out.println(response.getContentAsString());
+        System.out.println("Response content: " + response.getContentAsString());
 
         assertThat(response.getStatus(), is(200));
-        assertThat(response.getContentAsString(), containsString(updatedRequest.getRequestName()));
-        assertThat(response.getContentAsString(), equalTo(mapper.writeValueAsString(request1)));
+
+        Request returnedRequest = mapper.readValue(response.getContentAsString(), Request.class);
+
+        assertThat(returnedRequest.getRequestName(), equalTo(updatedRequest.getRequestName()));
+        assertThat(returnedRequest.getSubject(), equalTo(updatedRequest.getSubject()));
+        assertThat(returnedRequest.getDescription(), equalTo(updatedRequest.getDescription()));
     }
 
     @Test
