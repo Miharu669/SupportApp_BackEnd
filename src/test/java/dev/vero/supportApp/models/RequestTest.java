@@ -43,17 +43,17 @@ public class RequestTest {
     }
 
     @Test
-    public void testTopicSetterGetter() {
+    public void testSubjectSetterGetter() {
         Request request = new Request();
-        request.setSubject("Feature Request");
-        assertThat(request.getSubject()).isEqualTo("Feature Request");
+        request.setSubject("Bla bla");
+        assertThat(request.getSubject()).isEqualTo("Bla bla");
     }
 
     @Test
     public void testDescriptionSetterGetter() {
         Request request = new Request();
-        request.setDescription("Add new feature");
-        assertThat(request.getDescription()).isEqualTo("Add new feature");
+        request.setDescription("Bla bla bla");
+        assertThat(request.getDescription()).isEqualTo("Bla bla bla");
     }
 
     @Test

@@ -3,7 +3,6 @@ package dev.vero.supportApp.controllers;
 import dev.vero.supportApp.models.Request;
 import dev.vero.supportApp.services.RequestService;
 import jakarta.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/support-requests")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@CrossOrigin(origins = "https://miharu669.github.io", allowCredentials = "true")
 public class RequestController {
 
     private final RequestService service;
@@ -21,14 +20,12 @@ public class RequestController {
         this.service = service;
     }
 
-   
     @GetMapping
     public ResponseEntity<List<Request>> getAllRequests() {
         List<Request> requests = service.getAll();
         return ResponseEntity.ok(requests);
     }
 
-    
     @GetMapping("/{id}")
     public ResponseEntity<Request> getRequestById(@PathVariable Long id) {
         return service.findById(id)
@@ -36,16 +33,14 @@ public class RequestController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-   
     @PostMapping
     public ResponseEntity<?> createRequest(@Valid @RequestBody Request newRequest) {
         Request createdRequest = service.store(newRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
     }
 
-   
     @PutMapping("/{id}")
-    public ResponseEntity<Request> updateRequest(@PathVariable Long id,@Valid @RequestBody Request updatedRequest) {
+    public ResponseEntity<Request> updateRequest(@PathVariable Long id, @Valid @RequestBody Request updatedRequest) {
         try {
             Request updated = service.update(id, updatedRequest);
             return ResponseEntity.ok(updated);
@@ -54,7 +49,6 @@ public class RequestController {
         }
     }
 
-    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRequest(@PathVariable Long id) {
         try {
@@ -65,7 +59,6 @@ public class RequestController {
         }
     }
 
-    
     @GetMapping("/health")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity.ok("API is working");
